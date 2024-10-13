@@ -1,1 +1,67 @@
+using System;
 
+class Program
+{
+    static void Main()
+    {
+        string[] names = { "Danielle", "Edward", "Francis" };
+        char[] initials = { 'D', 'E', 'F' };
+        double[] sales = new double[names.Length]; 
+
+        string input;
+
+        while (true)
+        {
+            Console.Write("Enter a salesperson initial (D, E, F) or Z to exit: ");
+            input = Console.ReadLine().ToUpper();
+
+            if (input == "Z")
+                break;
+
+            int salespersonIndex = Array.IndexOf(initials, input[0]);
+            if (salespersonIndex == -1)
+            {
+                Console.WriteLine("Invalid initial. Please enter D, E, F, or Z.");
+                continue;
+            }
+
+            Console.Write("Enter the amount of the sale: ");
+            if (double.TryParse(Console.ReadLine(), out double saleAmount) && saleAmount >= 0)
+            {
+                sales[salespersonIndex] += saleAmount; 
+            }
+            else
+            {
+                Console.WriteLine("Invalid amount. Please enter a valid number.");
+            }
+        }
+
+        double grandTotal = 0;
+        for (int i = 0; i < sales.Length; i++)
+        {
+            grandTotal += sales[i];
+        }
+
+        Console.WriteLine("\nSales Totals:");
+        for (int i = 0; i < names.Length; i++)
+        {
+            Console.WriteLine($"{names[i]}: ${sales[i]:F2}");
+        }
+
+        Console.WriteLine($"Grand Total: ${grandTotal:F2}");
+
+        double highestTotal = 0;
+        int highestSalespersonIndex = -1;
+
+        for (int i = 0; i < sales.Length; i++)
+        {
+            if (sales[i] > highestTotal)
+            {
+                highestTotal = sales[i];
+                highestSalespersonIndex = i;
+            }
+        }
+
+        Console.WriteLine($"Salesperson with the highest total: {names[highestSalespersonIndex]} (${highestTotal:F2})");
+    }
+}
